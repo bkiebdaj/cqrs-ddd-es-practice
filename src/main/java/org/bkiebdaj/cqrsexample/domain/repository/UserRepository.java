@@ -1,7 +1,7 @@
 package org.bkiebdaj.cqrsexample.domain.repository;
 
 import lombok.extern.slf4j.Slf4j;
-import org.bkiebdaj.cqrsexample.common.AggregadeId;
+import org.bkiebdaj.cqrsexample.core.common.AggregadeId;
 import org.bkiebdaj.cqrsexample.domain.user.User;
 import org.springframework.stereotype.Repository;
 

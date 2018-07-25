@@ -1,6 +1,6 @@
-package org.bkiebdaj.cqrsexample.message;
+package org.bkiebdaj.cqrsexample.core.message;
 
-import org.bkiebdaj.cqrsexample.api.MessageBus;
+import org.bkiebdaj.cqrsexample.core.api.MessageBus;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;

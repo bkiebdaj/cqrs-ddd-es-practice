@@ -1,4 +1,4 @@
-package org.bkiebdaj.cqrsexample.api;
+package org.bkiebdaj.cqrsexample.core.api;
 
 public interface CommandHandler<T extends Command> {
     void handle(T command);

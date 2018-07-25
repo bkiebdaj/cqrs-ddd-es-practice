@@ -1,4 +1,4 @@
-package org.bkiebdaj.cqrsexample.common;
+package org.bkiebdaj.cqrsexample.core.common;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Value;

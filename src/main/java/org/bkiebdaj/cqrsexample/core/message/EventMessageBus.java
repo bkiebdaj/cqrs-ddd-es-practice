@@ -1,8 +1,8 @@
-package org.bkiebdaj.cqrsexample.message;
+package org.bkiebdaj.cqrsexample.core.message;
 
 import lombok.RequiredArgsConstructor;
-import org.bkiebdaj.cqrsexample.api.EventPayload;
-import org.bkiebdaj.cqrsexample.event.store.EventStore;
+import org.bkiebdaj.cqrsexample.core.api.EventPayload;
+import org.bkiebdaj.cqrsexample.core.event.store.EventStore;
 import org.springframework.stereotype.Component;
 
 @Component

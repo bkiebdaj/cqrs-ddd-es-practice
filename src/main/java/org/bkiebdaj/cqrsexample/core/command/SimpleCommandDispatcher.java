@@ -1,8 +1,8 @@
-package org.bkiebdaj.cqrsexample.command;
+package org.bkiebdaj.cqrsexample.core.command;
 
 import lombok.extern.slf4j.Slf4j;
-import org.bkiebdaj.cqrsexample.api.Command;
-import org.bkiebdaj.cqrsexample.api.CommandHandler;
+import org.bkiebdaj.cqrsexample.core.api.Command;
+import org.bkiebdaj.cqrsexample.core.api.CommandHandler;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

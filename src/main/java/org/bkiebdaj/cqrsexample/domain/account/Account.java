@@ -2,9 +2,9 @@ package org.bkiebdaj.cqrsexample.domain.account;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.bkiebdaj.cqrsexample.api.Gateway;
-import org.bkiebdaj.cqrsexample.common.AggregadeId;
-import org.bkiebdaj.cqrsexample.common.Event;
+import org.bkiebdaj.cqrsexample.core.api.Gateway;
+import org.bkiebdaj.cqrsexample.core.common.AggregadeId;
+import org.bkiebdaj.cqrsexample.core.common.Event;
 import org.bkiebdaj.cqrsexample.domain.event.AccountCreated;
 import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountDecreased;
 import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountIncreased;

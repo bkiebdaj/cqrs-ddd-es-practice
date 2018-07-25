@@ -1,7 +1,7 @@
 package org.bkiebdaj.cqrsexample.domain.user;
 
 import lombok.Value;
-import org.bkiebdaj.cqrsexample.common.AggregadeId;
+import org.bkiebdaj.cqrsexample.core.common.AggregadeId;
 
 @Value
 public class User {

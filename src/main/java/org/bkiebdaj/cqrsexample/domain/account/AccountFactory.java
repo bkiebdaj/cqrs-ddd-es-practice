@@ -2,10 +2,10 @@ package org.bkiebdaj.cqrsexample.domain.account;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bkiebdaj.cqrsexample.api.Gateway;
-import org.bkiebdaj.cqrsexample.common.AggregadeId;
-import org.bkiebdaj.cqrsexample.common.Event;
-import org.bkiebdaj.cqrsexample.event.store.EventStore;
+import org.bkiebdaj.cqrsexample.core.api.Gateway;
+import org.bkiebdaj.cqrsexample.core.common.AggregadeId;
+import org.bkiebdaj.cqrsexample.core.common.Event;
+import org.bkiebdaj.cqrsexample.core.event.store.EventStore;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

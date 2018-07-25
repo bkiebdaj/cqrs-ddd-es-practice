@@ -1,8 +1,8 @@
 package org.bkiebdaj.cqrsexample.domain.command;
 
 import lombok.Value;
-import org.bkiebdaj.cqrsexample.api.Command;
-import org.bkiebdaj.cqrsexample.common.AggregadeId;
+import org.bkiebdaj.cqrsexample.core.api.Command;
+import org.bkiebdaj.cqrsexample.core.common.AggregadeId;
 
 import java.math.BigDecimal;
 

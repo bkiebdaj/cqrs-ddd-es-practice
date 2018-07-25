@@ -1,8 +1,8 @@
-package org.bkiebdaj.cqrsexample.event;
+package org.bkiebdaj.cqrsexample.core.event;
 
 import lombok.extern.slf4j.Slf4j;
-import org.bkiebdaj.cqrsexample.api.EventHandler;
-import org.bkiebdaj.cqrsexample.api.EventPayload;
+import org.bkiebdaj.cqrsexample.core.api.EventHandler;
+import org.bkiebdaj.cqrsexample.core.api.EventPayload;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;

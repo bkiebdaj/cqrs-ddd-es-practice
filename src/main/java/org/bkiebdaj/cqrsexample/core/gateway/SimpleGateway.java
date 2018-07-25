@@ -1,11 +1,11 @@
-package org.bkiebdaj.cqrsexample.gateway;
+package org.bkiebdaj.cqrsexample.core.gateway;
 
 import lombok.extern.slf4j.Slf4j;
-import org.bkiebdaj.cqrsexample.api.Command;
-import org.bkiebdaj.cqrsexample.api.EventPayload;
-import org.bkiebdaj.cqrsexample.api.Gateway;
-import org.bkiebdaj.cqrsexample.message.CommandMessageBus;
-import org.bkiebdaj.cqrsexample.message.EventMessageBus;
+import org.bkiebdaj.cqrsexample.core.api.Command;
+import org.bkiebdaj.cqrsexample.core.api.EventPayload;
+import org.bkiebdaj.cqrsexample.core.api.Gateway;
+import org.bkiebdaj.cqrsexample.core.message.CommandMessageBus;
+import org.bkiebdaj.cqrsexample.core.message.EventMessageBus;
 import org.springframework.stereotype.Service;
 
 @Slf4j

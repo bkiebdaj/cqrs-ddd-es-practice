@@ -2,8 +2,8 @@ package org.bkiebdaj.cqrsexample.domain.action;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bkiebdaj.cqrsexample.api.EventHandler;
-import org.bkiebdaj.cqrsexample.api.Gateway;
+import org.bkiebdaj.cqrsexample.core.api.EventHandler;
+import org.bkiebdaj.cqrsexample.core.api.Gateway;
 import org.bkiebdaj.cqrsexample.domain.event.UserCreated;
 import org.bkiebdaj.cqrsexample.domain.repository.UserRepository;
 import org.bkiebdaj.cqrsexample.domain.user.User;

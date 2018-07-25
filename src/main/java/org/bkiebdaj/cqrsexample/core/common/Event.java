@@ -1,9 +1,9 @@
-package org.bkiebdaj.cqrsexample.common;
+package org.bkiebdaj.cqrsexample.core.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.ToString;
-import org.bkiebdaj.cqrsexample.api.EventPayload;
+import org.bkiebdaj.cqrsexample.core.api.EventPayload;
 
 import java.time.LocalDateTime;
 

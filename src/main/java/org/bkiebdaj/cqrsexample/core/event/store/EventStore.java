@@ -1,9 +1,9 @@
-package org.bkiebdaj.cqrsexample.event.store;
+package org.bkiebdaj.cqrsexample.core.event.store;
 
 import lombok.extern.slf4j.Slf4j;
-import org.bkiebdaj.cqrsexample.api.EventPayload;
-import org.bkiebdaj.cqrsexample.common.AggregadeId;
-import org.bkiebdaj.cqrsexample.common.Event;
+import org.bkiebdaj.cqrsexample.core.api.EventPayload;
+import org.bkiebdaj.cqrsexample.core.common.AggregadeId;
+import org.bkiebdaj.cqrsexample.core.common.Event;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
