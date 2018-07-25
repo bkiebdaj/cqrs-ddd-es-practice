@@ -1,7 +1,7 @@
 package com.github.slimocb.cqrsexample.event;
 
-import com.github.slimocb.cqrsexample.api.Event;
 import com.github.slimocb.cqrsexample.api.EventHandler;
+import com.github.slimocb.cqrsexample.api.EventPayload;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +23,7 @@ public class SimpleEventDispatcher implements EventDispatcher {
 
     @Override
     @SuppressWarnings("unchecked")
-    public void dispatchEvent(Event event) {
+    public void dispatchEvent(EventPayload event) {
         log.info("Dispatch event: {}", name(event));
         EventHandler eventHandler = eventHandlerRegister.get(event);
         if (eventHandler == null) {

@@ -2,10 +2,6 @@ package com.github.slimocb.cqrsexample.api;
 
 import com.github.slimocb.cqrsexample.common.AggregadeId;
 
-public interface Event {
+public interface EventPayload {
     AggregadeId getAggregadeId();
-
-    default String getName() {
-        return this.getClass().getSimpleName();
-    }
 }

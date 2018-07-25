@@ -1,6 +1,6 @@
 package com.github.slimocb.cqrsexample.event;
 
-import com.github.slimocb.cqrsexample.api.Event;
+import com.github.slimocb.cqrsexample.api.EventPayload;
 import com.github.slimocb.cqrsexample.message.EventMessageBus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class EventProcessor implements Runnable {
     public void run() {
         while (true) {
             try {
-                Event event = eventMessageBus.poll();
+                EventPayload event = eventMessageBus.poll();
                 eventDispatcher.dispatchEvent(event);
             } catch (Exception e) {
                 log.error("Error while processing command", e);

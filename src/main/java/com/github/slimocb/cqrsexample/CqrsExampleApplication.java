@@ -1,7 +1,7 @@
 package com.github.slimocb.cqrsexample;
 
-import com.github.slimocb.cqrsexample.api.Event;
 import com.github.slimocb.cqrsexample.common.AggregadeId;
+import com.github.slimocb.cqrsexample.common.Event;
 import com.github.slimocb.cqrsexample.domain.command.CreateUserCommand;
 import com.github.slimocb.cqrsexample.domain.command.PayIntoAccountCommand;
 import com.github.slimocb.cqrsexample.domain.command.WithdrawFromAccountCommand;

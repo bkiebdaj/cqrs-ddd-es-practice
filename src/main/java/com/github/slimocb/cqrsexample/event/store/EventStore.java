@@ -1,7 +1,8 @@
 package com.github.slimocb.cqrsexample.event.store;
 
-import com.github.slimocb.cqrsexample.api.Event;
+import com.github.slimocb.cqrsexample.api.EventPayload;
 import com.github.slimocb.cqrsexample.common.AggregadeId;
+import com.github.slimocb.cqrsexample.common.Event;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -10,10 +11,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -21,9 +18,13 @@ import java.util.stream.Collectors;
 public class EventStore {
     Collection<Event> data = Collections.synchronizedCollection(new ArrayList<Event>());
 
-    public void save(Event event) {
+    public void save(EventPayload event) {
         log.info("Store event: {}", event);
-        data.add(event);
+        data.add(new Event(event.getAggregadeId(), 0, LocalDateTime.now(), event));
+    }
+
+    public void save(EventPayload event, int version) {
+
     }
 
     public List<Event> findAllBy(AggregadeId aggregadeId) {

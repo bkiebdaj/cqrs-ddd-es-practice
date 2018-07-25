@@ -1,5 +1,6 @@
 package com.github.slimocb.cqrsexample.common;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Value;
 
 import java.util.UUID;
@@ -18,5 +19,10 @@ public class AggregadeId {
 
     public static AggregadeId of(String id) {
         return new AggregadeId(UUID.fromString(id));
+    }
+
+    @JsonValue
+    public UUID getId() {
+        return this.id;
     }
 }

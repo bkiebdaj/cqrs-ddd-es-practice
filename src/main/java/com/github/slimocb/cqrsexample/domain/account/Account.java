@@ -1,11 +1,11 @@
 package com.github.slimocb.cqrsexample.domain.account;
 
-import com.github.slimocb.cqrsexample.api.Event;
 import com.github.slimocb.cqrsexample.api.Gateway;
 import com.github.slimocb.cqrsexample.common.AggregadeId;
-import com.github.slimocb.cqrsexample.domain.event.AccountCreatedEvent;
-import com.github.slimocb.cqrsexample.domain.event.AccountMoneyAmountDecreasedEvent;
-import com.github.slimocb.cqrsexample.domain.event.AccountMoneyAmountIncreasedEvent;
+import com.github.slimocb.cqrsexample.common.Event;
+import com.github.slimocb.cqrsexample.domain.event.AccountCreated;
+import com.github.slimocb.cqrsexample.domain.event.AccountMoneyAmountDecreased;
+import com.github.slimocb.cqrsexample.domain.event.AccountMoneyAmountIncreased;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,10 +23,8 @@ public class Account {
 
     Account(Gateway gateway, AggregadeId aggregadeId) {
         this.gateway = gateway;
-        AccountCreatedEvent event = new AccountCreatedEvent(aggregadeId, AccountNumberGenerator.generate());
-
+        AccountCreated event = new AccountCreated(aggregadeId, AccountNumberGenerator.generate());
         handleEvent(event);
-
         gateway.publishEvent(event);
     }
 
@@ -35,26 +33,26 @@ public class Account {
     }
 
     private void handleEvent(Event event) {
-        if (AccountCreatedEvent.class.isAssignableFrom(event.getClass())) {
-            handleEvent(AccountCreatedEvent.class.cast(event));
-        } else if (AccountMoneyAmountIncreasedEvent.class.isAssignableFrom(event.getClass())) {
-            handleEvent(AccountMoneyAmountIncreasedEvent.class.cast(event));
-        } else if (AccountMoneyAmountDecreasedEvent.class.isAssignableFrom(event.getClass())) {
-            handleEvent(AccountMoneyAmountDecreasedEvent.class.cast(event));
+        if (AccountCreated.class.isAssignableFrom(event.getType())) {
+            handleEvent(AccountCreated.class.cast(event.getPayload()));
+        } else if (AccountMoneyAmountIncreased.class.isAssignableFrom(event.getType())) {
+            handleEvent(AccountMoneyAmountIncreased.class.cast(event.getPayload()));
+        } else if (AccountMoneyAmountDecreased.class.isAssignableFrom(event.getType())) {
+            handleEvent(AccountMoneyAmountDecreased.class.cast(event.getPayload()));
         }
     }
 
-    private void handleEvent(AccountCreatedEvent accountCreatedEvent) {
-        this.aggregadeId = accountCreatedEvent.getAggregadeId();
-        this.accountNumber = accountCreatedEvent.getAccountNumber();
+    private void handleEvent(AccountCreated accountCreated) {
+        this.aggregadeId = accountCreated.getAggregadeId();
+        this.accountNumber = accountCreated.getAccountNumber();
         this.cashAmount = BigDecimal.ZERO;
     }
 
-    private void handleEvent(AccountMoneyAmountIncreasedEvent event) {
+    private void handleEvent(AccountMoneyAmountIncreased event) {
         this.cashAmount = this.cashAmount.add(event.getAmount());
     }
 
-    private void handleEvent(AccountMoneyAmountDecreasedEvent event) {
+    private void handleEvent(AccountMoneyAmountDecreased event) {
         this.cashAmount = this.cashAmount.subtract(event.getAmount());
     }
 
@@ -63,7 +61,7 @@ public class Account {
     }
 
     public void payInto(BigDecimal amount) {
-        AccountMoneyAmountIncreasedEvent event = new AccountMoneyAmountIncreasedEvent(this.aggregadeId, amount);
+        AccountMoneyAmountIncreased event = new AccountMoneyAmountIncreased(this.aggregadeId, amount);
         handleEvent(event);
         gateway.publishEvent(event);
     }
@@ -72,7 +70,7 @@ public class Account {
         if (amount.compareTo(this.cashAmount) > 0) {
             throw new IllegalStateException("Not enough money on account for transaction: " + this.cashAmount + " but given: " + amount);
         }
-        AccountMoneyAmountDecreasedEvent event = new AccountMoneyAmountDecreasedEvent(this.aggregadeId, amount);
+        AccountMoneyAmountDecreased event = new AccountMoneyAmountDecreased(this.aggregadeId, amount);
         handleEvent(event);
         gateway.publishEvent(event);
     }

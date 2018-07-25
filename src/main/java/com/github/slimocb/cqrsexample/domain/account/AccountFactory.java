@@ -1,8 +1,8 @@
 package com.github.slimocb.cqrsexample.domain.account;
 
-import com.github.slimocb.cqrsexample.api.Event;
 import com.github.slimocb.cqrsexample.api.Gateway;
 import com.github.slimocb.cqrsexample.common.AggregadeId;
+import com.github.slimocb.cqrsexample.common.Event;
 import com.github.slimocb.cqrsexample.event.store.EventStore;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

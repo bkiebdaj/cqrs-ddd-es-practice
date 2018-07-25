@@ -1,7 +1,7 @@
 package com.github.slimocb.cqrsexample.gateway;
 
 import com.github.slimocb.cqrsexample.api.Command;
-import com.github.slimocb.cqrsexample.api.Event;
+import com.github.slimocb.cqrsexample.api.EventPayload;
 import com.github.slimocb.cqrsexample.api.Gateway;
 import com.github.slimocb.cqrsexample.message.CommandMessageBus;
 import com.github.slimocb.cqrsexample.message.EventMessageBus;
@@ -27,7 +27,7 @@ public class SimpleGateway implements Gateway {
     }
 
     @Override
-    public void publishEvent(Event event) {
+    public void publishEvent(EventPayload event) {
         eventMessageBus.publish(event);
     }
 }
