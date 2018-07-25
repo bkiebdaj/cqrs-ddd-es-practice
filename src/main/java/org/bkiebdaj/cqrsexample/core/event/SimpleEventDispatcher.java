@@ -2,7 +2,6 @@ package org.bkiebdaj.cqrsexample.core.event;
 
 import lombok.extern.slf4j.Slf4j;
 import org.bkiebdaj.cqrsexample.core.api.EventHandler;
-import org.bkiebdaj.cqrsexample.core.api.EventPayload;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class SimpleEventDispatcher implements EventDispatcher {
 
     @Override
     @SuppressWarnings("unchecked")
-    public void dispatchEvent(EventPayload event) {
+    public void dispatchEvent(Event event) {
         log.info("Dispatch event: {}", name(event));
         EventHandler eventHandler = eventHandlerRegister.get(event);
         if (eventHandler == null) {
@@ -31,7 +30,7 @@ public class SimpleEventDispatcher implements EventDispatcher {
             return;
         }
         log.info("Found event handler: {} --> {}", name(event), name(eventHandler));
-        executor.execute(() -> eventHandler.handle(event));
+        executor.execute(() -> eventHandler.handle(event.getPayload()));
     }
 
     private String name(Object object) {

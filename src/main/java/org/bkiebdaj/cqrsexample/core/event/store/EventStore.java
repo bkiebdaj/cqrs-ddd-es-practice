@@ -1,12 +1,10 @@
 package org.bkiebdaj.cqrsexample.core.event.store;
 
 import lombok.extern.slf4j.Slf4j;
-import org.bkiebdaj.cqrsexample.core.api.EventPayload;
 import org.bkiebdaj.cqrsexample.core.common.AggregadeId;
-import org.bkiebdaj.cqrsexample.core.common.Event;
+import org.bkiebdaj.cqrsexample.core.event.Event;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,13 +16,9 @@ import java.util.stream.Collectors;
 public class EventStore {
     private final Collection<Event> data = Collections.synchronizedCollection(new ArrayList<>());
 
-    public void save(EventPayload event) {
+    public void save(Event event) {
         log.info("Store event: {}", event);
-        data.add(new Event(event.getAggregadeId(), 0, LocalDateTime.now(), event));
-    }
-
-    public void save(EventPayload event, int version) {
-
+        data.add(event);
     }
 
     public List<Event> findAllBy(AggregadeId aggregadeId) {

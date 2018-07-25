@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.bkiebdaj.cqrsexample.core.api.Gateway;
 import org.bkiebdaj.cqrsexample.core.common.AggregadeId;
-import org.bkiebdaj.cqrsexample.core.common.Event;
+import org.bkiebdaj.cqrsexample.core.event.Event;
+import org.bkiebdaj.cqrsexample.core.event.EventFactory;
 import org.bkiebdaj.cqrsexample.domain.event.AccountCreated;
 import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountDecreased;
 import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountIncreased;
@@ -23,7 +24,7 @@ public class Account {
 
     Account(Gateway gateway, AggregadeId aggregadeId) {
         this.gateway = gateway;
-        AccountCreated event = new AccountCreated(aggregadeId, AccountNumberGenerator.generate());
+        Event event = EventFactory.create(new AccountCreated(aggregadeId, AccountNumberGenerator.generate()));
         handleEvent(event);
         gateway.publishEvent(event);
     }
@@ -61,7 +62,7 @@ public class Account {
     }
 
     public void payInto(BigDecimal amount) {
-        AccountMoneyAmountIncreased event = new AccountMoneyAmountIncreased(this.aggregadeId, amount);
+        Event event = EventFactory.create(new AccountMoneyAmountIncreased(this.aggregadeId, amount));
         handleEvent(event);
         gateway.publishEvent(event);
     }
@@ -70,7 +71,7 @@ public class Account {
         if (amount.compareTo(this.cashAmount) > 0) {
             throw new IllegalStateException("Not enough money on account for transaction: " + this.cashAmount + " but given: " + amount);
         }
-        AccountMoneyAmountDecreased event = new AccountMoneyAmountDecreased(this.aggregadeId, amount);
+        Event event = EventFactory.create(new AccountMoneyAmountDecreased(this.aggregadeId, amount));
         handleEvent(event);
         gateway.publishEvent(event);
     }

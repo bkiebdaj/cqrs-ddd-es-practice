@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bkiebdaj.cqrsexample.core.common.AggregadeId;
-import org.bkiebdaj.cqrsexample.core.common.Event;
+import org.bkiebdaj.cqrsexample.core.event.Event;
 import org.bkiebdaj.cqrsexample.core.event.store.EventStore;
 import org.bkiebdaj.cqrsexample.core.gateway.SimpleGateway;
 import org.bkiebdaj.cqrsexample.domain.command.CreateUserCommand;

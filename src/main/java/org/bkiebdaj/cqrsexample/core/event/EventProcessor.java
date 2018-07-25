@@ -1,7 +1,6 @@
 package org.bkiebdaj.cqrsexample.core.event;
 
 import lombok.extern.slf4j.Slf4j;
-import org.bkiebdaj.cqrsexample.core.api.EventPayload;
 import org.bkiebdaj.cqrsexample.core.message.EventMessageBus;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +24,7 @@ public class EventProcessor implements Runnable {
     public void run() {
         while (true) {
             try {
-                EventPayload event = eventMessageBus.poll();
+                Event event = eventMessageBus.poll();
                 eventDispatcher.dispatchEvent(event);
             } catch (Exception e) {
                 log.error("Error while processing command", e);

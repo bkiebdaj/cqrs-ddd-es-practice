@@ -13,8 +13,8 @@ import java.util.stream.Stream;
 class EventHandlerRegister {
     private final Map<Class<? extends EventPayload>, EventHandler> handlers = new HashMap<>();
 
-    EventHandler get(EventPayload event) {
-        return handlers.get(event.getClass());
+    EventHandler get(Event event) {
+        return handlers.get(event.getType());
     }
 
     void registerHandler(EventHandler eventHandler) {

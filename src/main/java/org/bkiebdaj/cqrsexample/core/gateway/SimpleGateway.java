@@ -2,8 +2,8 @@ package org.bkiebdaj.cqrsexample.core.gateway;
 
 import lombok.extern.slf4j.Slf4j;
 import org.bkiebdaj.cqrsexample.core.api.Command;
-import org.bkiebdaj.cqrsexample.core.api.EventPayload;
 import org.bkiebdaj.cqrsexample.core.api.Gateway;
+import org.bkiebdaj.cqrsexample.core.event.Event;
 import org.bkiebdaj.cqrsexample.core.message.CommandMessageBus;
 import org.bkiebdaj.cqrsexample.core.message.EventMessageBus;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class SimpleGateway implements Gateway {
     }
 
     @Override
-    public void publishEvent(EventPayload event) {
+    public void publishEvent(Event event) {
         eventMessageBus.publish(event);
     }
 }
