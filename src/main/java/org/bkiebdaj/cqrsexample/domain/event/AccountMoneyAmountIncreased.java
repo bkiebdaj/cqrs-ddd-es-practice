@@ -1,0 +1,13 @@
+package org.bkiebdaj.cqrsexample.domain.event;
+
+import lombok.Value;
+import org.bkiebdaj.cqrsexample.api.EventPayload;
+import org.bkiebdaj.cqrsexample.common.AggregadeId;
+
+import java.math.BigDecimal;
+
+@Value
+public class AccountMoneyAmountIncreased implements EventPayload {
+    AggregadeId aggregadeId;
+    BigDecimal amount;
+}
