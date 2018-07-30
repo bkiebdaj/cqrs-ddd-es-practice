@@ -1,4 +1,4 @@
-package org.bkiebdaj.cqrsexample.domain.action;
+package org.bkiebdaj.cqrsexample.domain.service.accountpresentation.action;
 
 import lombok.RequiredArgsConstructor;
 import org.bkiebdaj.cqrsexample.core.api.EventHandler;
