@@ -1,8 +1,8 @@
 package org.bkiebdaj.cqrsexample.domain.service.accountpresentation;
 
-import org.bkiebdaj.cqrsexample.domain.event.AccountCreated;
-import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountDecreased;
-import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountIncreased;
+import org.bkiebdaj.cqrsexample.domain.event.payload.AccountCreated;
+import org.bkiebdaj.cqrsexample.domain.event.payload.AccountMoneyAmountDecreased;
+import org.bkiebdaj.cqrsexample.domain.event.payload.AccountMoneyAmountIncreased;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;

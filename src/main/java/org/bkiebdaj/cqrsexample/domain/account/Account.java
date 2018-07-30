@@ -5,12 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.bkiebdaj.cqrsexample.core.api.Gateway;
 import org.bkiebdaj.cqrsexample.core.common.AggregadeId;
 import org.bkiebdaj.cqrsexample.core.event.Event;
-import org.bkiebdaj.cqrsexample.core.event.EventFactory;
-import org.bkiebdaj.cqrsexample.domain.event.AccountCreated;
-import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountDecreased;
-import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountIncreased;
+import org.bkiebdaj.cqrsexample.domain.event.AccountCreatedEvent;
+import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountDecreasedEvent;
+import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountIncreasedEvent;
+import org.bkiebdaj.cqrsexample.domain.event.payload.AccountCreated;
+import org.bkiebdaj.cqrsexample.domain.event.payload.AccountMoneyAmountDecreased;
+import org.bkiebdaj.cqrsexample.domain.event.payload.AccountMoneyAmountIncreased;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -24,7 +27,7 @@ public class Account {
 
     Account(Gateway gateway, AggregadeId aggregadeId) {
         this.gateway = gateway;
-        Event event = EventFactory.create(new AccountCreated(aggregadeId, AccountNumberGenerator.generate()));
+        Event event = new AccountCreatedEvent(aggregadeId, 0, LocalDateTime.now(), new AccountCreated(aggregadeId, AccountNumberGenerator.generate()));
         handleEvent(event);
         gateway.publishEvent(event);
     }
@@ -34,11 +37,11 @@ public class Account {
     }
 
     private void handleEvent(Event event) {
-        if (AccountCreated.class.isAssignableFrom(event.getType())) {
+        if (AccountCreatedEvent.class.isAssignableFrom(event.getClass())) {
             handleEvent(AccountCreated.class.cast(event.getPayload()));
-        } else if (AccountMoneyAmountIncreased.class.isAssignableFrom(event.getType())) {
+        } else if (AccountMoneyAmountIncreasedEvent.class.isAssignableFrom(event.getClass())) {
             handleEvent(AccountMoneyAmountIncreased.class.cast(event.getPayload()));
-        } else if (AccountMoneyAmountDecreased.class.isAssignableFrom(event.getType())) {
+        } else if (AccountMoneyAmountDecreasedEvent.class.isAssignableFrom(event.getClass())) {
             handleEvent(AccountMoneyAmountDecreased.class.cast(event.getPayload()));
         }
     }
@@ -62,7 +65,7 @@ public class Account {
     }
 
     public void payInto(BigDecimal amount) {
-        Event event = EventFactory.create(new AccountMoneyAmountIncreased(this.aggregadeId, amount));
+        Event event = new AccountMoneyAmountIncreasedEvent(aggregadeId, 0, LocalDateTime.now(), new AccountMoneyAmountIncreased(aggregadeId, amount));
         handleEvent(event);
         gateway.publishEvent(event);
     }
@@ -71,7 +74,7 @@ public class Account {
         if (amount.compareTo(this.cashAmount) > 0) {
             throw new IllegalStateException("Not enough money on account for transaction: " + this.cashAmount + " but given: " + amount);
         }
-        Event event = EventFactory.create(new AccountMoneyAmountDecreased(this.aggregadeId, amount));
+        Event event = new AccountMoneyAmountDecreasedEvent(aggregadeId, 0, LocalDateTime.now(), new AccountMoneyAmountDecreased(aggregadeId, amount));
         handleEvent(event);
         gateway.publishEvent(event);
     }

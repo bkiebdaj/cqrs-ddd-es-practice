@@ -30,7 +30,7 @@ public class SimpleEventDispatcher implements EventDispatcher {
             return;
         }
         log.info("Found event handler: {} --> {}", name(event), name(eventHandler));
-        executor.execute(() -> eventHandler.handle(event.getPayload()));
+        executor.execute(() -> eventHandler.handle(event));
     }
 
     private String name(Object object) {

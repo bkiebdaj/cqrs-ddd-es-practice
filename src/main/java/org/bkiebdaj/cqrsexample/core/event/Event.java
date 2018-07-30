@@ -10,14 +10,14 @@ import java.time.LocalDateTime;
 
 @ToString
 @Getter
-public class Event {
+abstract public class Event<T extends EventPayload> {
     private final AggregadeId aggregadeId;
     private final int version;
     private final LocalDateTime createTime;
     private final Class<? extends EventPayload> type;
-    private final EventPayload payload;
+    private final T payload;
 
-    public Event(AggregadeId aggregadeId, int version, LocalDateTime createTime, EventPayload payload) {
+    public Event(AggregadeId aggregadeId, int version, LocalDateTime createTime, T payload) {
         this.aggregadeId = aggregadeId;
         this.version = version;
         this.createTime = createTime;
