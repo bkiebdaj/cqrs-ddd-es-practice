@@ -13,7 +13,6 @@ import org.bkiebdaj.cqrsexample.domain.event.payload.AccountMoneyAmountDecreased
 import org.bkiebdaj.cqrsexample.domain.event.payload.AccountMoneyAmountIncreased;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -27,7 +26,7 @@ public class Account {
 
     Account(Gateway gateway, AggregadeId aggregadeId) {
         this.gateway = gateway;
-        Event event = new AccountCreatedEvent(aggregadeId, 0, LocalDateTime.now(), new AccountCreated(aggregadeId, AccountNumberGenerator.generate()));
+        Event event = new AccountCreatedEvent(aggregadeId, new AccountCreated(aggregadeId, AccountNumberGenerator.generate()));
         handleEvent(event);
         gateway.publishEvent(event);
     }
@@ -65,7 +64,7 @@ public class Account {
     }
 
     public void payInto(BigDecimal amount) {
-        Event event = new AccountMoneyAmountIncreasedEvent(aggregadeId, 0, LocalDateTime.now(), new AccountMoneyAmountIncreased(aggregadeId, amount));
+        Event event = new AccountMoneyAmountIncreasedEvent(aggregadeId, new AccountMoneyAmountIncreased(aggregadeId, amount));
         handleEvent(event);
         gateway.publishEvent(event);
     }
@@ -74,7 +73,7 @@ public class Account {
         if (amount.compareTo(this.cashAmount) > 0) {
             throw new IllegalStateException("Not enough money on account for transaction: " + this.cashAmount + " but given: " + amount);
         }
-        Event event = new AccountMoneyAmountDecreasedEvent(aggregadeId, 0, LocalDateTime.now(), new AccountMoneyAmountDecreased(aggregadeId, amount));
+        Event event = new AccountMoneyAmountDecreasedEvent(aggregadeId, new AccountMoneyAmountDecreased(aggregadeId, amount));
         handleEvent(event);
         gateway.publishEvent(event);
     }

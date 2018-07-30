@@ -17,10 +17,10 @@ abstract public class Event<T extends EventPayload> {
     private final Class<? extends EventPayload> type;
     private final T payload;
 
-    public Event(AggregadeId aggregadeId, int version, LocalDateTime createTime, T payload) {
+    public Event(AggregadeId aggregadeId, T payload) {
         this.aggregadeId = aggregadeId;
-        this.version = version;
-        this.createTime = createTime;
+        this.version = 0;
+        this.createTime = LocalDateTime.now();
         this.payload = payload;
         this.type = payload.getClass();
     }
