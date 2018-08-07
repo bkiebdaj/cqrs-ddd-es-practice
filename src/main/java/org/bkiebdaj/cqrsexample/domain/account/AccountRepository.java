@@ -14,6 +14,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class AccountRepository {
+
     private final Gateway gateway;
     private final EventStore eventStore;
 
@@ -27,11 +28,11 @@ public class AccountRepository {
             throw new IllegalStateException("Account not exists: " + aggregadeId.getId());
         }
         Account account = new Account(aggregadeId);
-        account.replay(events);
+        account.apply(events);
         return account;
     }
 
-    public void saveEvents(List<Event> events) {
+    public void publishEvents(List<Event> events) {
         events.forEach(gateway::publishEvent);
     }
 }

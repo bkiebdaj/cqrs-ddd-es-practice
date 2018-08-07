@@ -23,6 +23,6 @@ public class CreateAccountCommandHandler implements CommandHandler<CreateAccount
         log.info("Handle command: {}", command);
         Account account = accountRepository.create();
         List<Event> events = account.handle(command);
-        accountRepository.saveEvents(events);
+        accountRepository.publishEvents(events);
     }
 }

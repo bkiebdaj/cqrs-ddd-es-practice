@@ -23,6 +23,6 @@ public class WithdrawFromAccountCommandHandler implements CommandHandler<Withdra
         log.info("Handle command: {}", command);
         Account account = accountRepository.load(command.getAccountId());
         List<Event> events = account.handle(command);
-        accountRepository.saveEvents(events);
+        accountRepository.publishEvents(events);
     }
 }
