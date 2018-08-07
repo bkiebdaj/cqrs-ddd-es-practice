@@ -13,12 +13,12 @@ import java.util.List;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class AccountFactory {
+public class AccountRepository {
     private final Gateway gateway;
     private final EventStore eventStore;
 
     public Account create() {
-        return new Account(gateway, AggregadeId.create());
+        return new Account(AggregadeId.create());
     }
 
     public Account load(AggregadeId aggregadeId) {
@@ -26,8 +26,12 @@ public class AccountFactory {
         if (events.isEmpty()) {
             throw new IllegalStateException("Account not exists: " + aggregadeId.getId());
         }
-        Account account = new Account(gateway);
+        Account account = new Account(aggregadeId);
         account.replay(events);
         return account;
+    }
+
+    public void saveEvents(List<Event> events) {
+        events.forEach(gateway::publishEvent);
     }
 }

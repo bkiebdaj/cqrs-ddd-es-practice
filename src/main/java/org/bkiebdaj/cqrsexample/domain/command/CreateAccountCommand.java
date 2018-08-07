@@ -4,7 +4,7 @@ import lombok.Value;
 import org.bkiebdaj.cqrsexample.core.api.Command;
 
 @Value
-public class CreateUserCommand implements Command {
+public class CreateAccountCommand implements Command {
     String username;
     String email;
 }

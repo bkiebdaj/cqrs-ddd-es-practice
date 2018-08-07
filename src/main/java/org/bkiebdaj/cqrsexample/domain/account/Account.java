@@ -2,9 +2,11 @@ package org.bkiebdaj.cqrsexample.domain.account;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.bkiebdaj.cqrsexample.core.api.Gateway;
 import org.bkiebdaj.cqrsexample.core.common.AggregadeId;
 import org.bkiebdaj.cqrsexample.core.event.Event;
+import org.bkiebdaj.cqrsexample.domain.command.CreateAccountCommand;
+import org.bkiebdaj.cqrsexample.domain.command.PayIntoAccountCommand;
+import org.bkiebdaj.cqrsexample.domain.command.WithdrawFromAccountCommand;
 import org.bkiebdaj.cqrsexample.domain.event.AccountCreatedEvent;
 import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountDecreasedEvent;
 import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountIncreasedEvent;
@@ -13,68 +15,64 @@ import org.bkiebdaj.cqrsexample.domain.event.payload.AccountMoneyAmountDecreased
 import org.bkiebdaj.cqrsexample.domain.event.payload.AccountMoneyAmountIncreased;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
 public class Account {
-    private final Gateway gateway;
     @Getter
     private AggregadeId aggregadeId;
 
     private String accountNumber;
     private BigDecimal cashAmount;
 
-    Account(Gateway gateway, AggregadeId aggregadeId) {
-        this.gateway = gateway;
-        Event event = new AccountCreatedEvent(aggregadeId, new AccountCreated(aggregadeId, AccountNumberGenerator.generate()));
-        handleEvent(event);
-        gateway.publishEvent(event);
+    Account(AggregadeId aggregadeId) {
+        this.aggregadeId = aggregadeId;
     }
 
-    Account(Gateway gateway) {
-        this.gateway = gateway;
-    }
-
-    private void handleEvent(Event event) {
+    public void apply(Event event) {
         if (AccountCreatedEvent.class.isAssignableFrom(event.getClass())) {
-            handleEvent(AccountCreated.class.cast(event.getPayload()));
+            apply(AccountCreated.class.cast(event.getPayload()));
         } else if (AccountMoneyAmountIncreasedEvent.class.isAssignableFrom(event.getClass())) {
-            handleEvent(AccountMoneyAmountIncreased.class.cast(event.getPayload()));
+            apply(AccountMoneyAmountIncreased.class.cast(event.getPayload()));
         } else if (AccountMoneyAmountDecreasedEvent.class.isAssignableFrom(event.getClass())) {
-            handleEvent(AccountMoneyAmountDecreased.class.cast(event.getPayload()));
+            apply(AccountMoneyAmountDecreased.class.cast(event.getPayload()));
         }
     }
 
-    private void handleEvent(AccountCreated accountCreated) {
+    private void apply(AccountCreated accountCreated) {
         this.aggregadeId = accountCreated.getAggregadeId();
         this.accountNumber = accountCreated.getAccountNumber();
         this.cashAmount = BigDecimal.ZERO;
     }
 
-    private void handleEvent(AccountMoneyAmountIncreased event) {
+    private void apply(AccountMoneyAmountIncreased event) {
         this.cashAmount = this.cashAmount.add(event.getAmount());
     }
 
-    private void handleEvent(AccountMoneyAmountDecreased event) {
+    private void apply(AccountMoneyAmountDecreased event) {
         this.cashAmount = this.cashAmount.subtract(event.getAmount());
     }
 
     void replay(List<Event> events) {
-        events.forEach(this::handleEvent);
+        events.forEach(this::apply);
     }
 
-    public void payInto(BigDecimal amount) {
-        Event event = new AccountMoneyAmountIncreasedEvent(aggregadeId, new AccountMoneyAmountIncreased(aggregadeId, amount));
-        handleEvent(event);
-        gateway.publishEvent(event);
+    public List<Event> handle(CreateAccountCommand createAccountCommand) {
+        Event event = new AccountCreatedEvent(aggregadeId, new AccountCreated(aggregadeId, AccountNumberGenerator.generate()));
+        return Collections.singletonList(event);
     }
 
-    public void withdraw(BigDecimal amount) {
-        if (amount.compareTo(this.cashAmount) > 0) {
-            throw new IllegalStateException("Not enough money on account for transaction: " + this.cashAmount + " but given: " + amount);
+    public List<Event> handle(PayIntoAccountCommand command) {
+        Event event = new AccountMoneyAmountIncreasedEvent(aggregadeId, new AccountMoneyAmountIncreased(aggregadeId, command.getAmount()));
+        return Collections.singletonList(event);
+    }
+
+    public List<Event> handle(WithdrawFromAccountCommand command) {
+        if (command.getAmount().compareTo(this.cashAmount) > 0) {
+            throw new IllegalStateException("Not enough money on account for transaction: " + this.cashAmount + " but given: " + command.getAmount());
         }
-        Event event = new AccountMoneyAmountDecreasedEvent(aggregadeId, new AccountMoneyAmountDecreased(aggregadeId, amount));
-        handleEvent(event);
-        gateway.publishEvent(event);
+        Event event = new AccountMoneyAmountDecreasedEvent(aggregadeId, new AccountMoneyAmountDecreased(aggregadeId, command.getAmount()));
+        return Collections.singletonList(event);
     }
 }
