@@ -14,6 +14,6 @@ public class AccountEntityDecreaseAmount implements EventHandler<AccountMoneyAmo
 
     @Override
     public void handle(AccountMoneyAmountDecreasedEvent event) {
-        accountPresentationService.handle(event.getPayload());
+        accountPresentationService.handle(event);
     }
 }

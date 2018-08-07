@@ -14,6 +14,6 @@ public class CreateAccountEntity implements EventHandler<AccountCreatedEvent> {
 
     @Override
     public void handle(AccountCreatedEvent event) {
-        accountPresentationService.handle(event.getPayload());
+        accountPresentationService.handle(event);
     }
 }

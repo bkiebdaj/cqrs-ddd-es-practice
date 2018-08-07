@@ -1,7 +1,8 @@
 package org.bkiebdaj.cqrsexample.domain.account;
 
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.bkiebdaj.cqrsexample.core.aggreagate.AggregateRoot;
+import org.bkiebdaj.cqrsexample.core.aggreagate.ApplyEvent;
 import org.bkiebdaj.cqrsexample.core.common.AggregadeId;
 import org.bkiebdaj.cqrsexample.core.event.Event;
 import org.bkiebdaj.cqrsexample.domain.command.CreateAccountCommand;
@@ -19,52 +20,38 @@ import java.util.Collections;
 import java.util.List;
 
 @Slf4j
-public class Account {
-    @Getter
-    private AggregadeId aggregadeId;
+public class Account extends AggregateRoot {
 
     private String accountNumber;
     private BigDecimal cashAmount;
 
     Account(AggregadeId aggregadeId) {
-        this.aggregadeId = aggregadeId;
+        super(aggregadeId);
     }
 
-    public void apply(Event event) {
-        if (AccountCreatedEvent.class.isAssignableFrom(event.getClass())) {
-            apply(AccountCreated.class.cast(event.getPayload()));
-        } else if (AccountMoneyAmountIncreasedEvent.class.isAssignableFrom(event.getClass())) {
-            apply(AccountMoneyAmountIncreased.class.cast(event.getPayload()));
-        } else if (AccountMoneyAmountDecreasedEvent.class.isAssignableFrom(event.getClass())) {
-            apply(AccountMoneyAmountDecreased.class.cast(event.getPayload()));
-        }
-    }
-
-    private void apply(AccountCreated accountCreated) {
-        this.aggregadeId = accountCreated.getAggregadeId();
-        this.accountNumber = accountCreated.getAccountNumber();
+    @ApplyEvent
+    public void apply(AccountCreatedEvent event) {
+        this.accountNumber = event.getPayload().getAccountNumber();
         this.cashAmount = BigDecimal.ZERO;
     }
 
-    private void apply(AccountMoneyAmountIncreased event) {
-        this.cashAmount = this.cashAmount.add(event.getAmount());
+    @ApplyEvent
+    public void apply(AccountMoneyAmountIncreasedEvent event) {
+        this.cashAmount = this.cashAmount.add(event.getPayload().getAmount());
     }
 
-    private void apply(AccountMoneyAmountDecreased event) {
-        this.cashAmount = this.cashAmount.subtract(event.getAmount());
-    }
-
-    void replay(List<Event> events) {
-        events.forEach(this::apply);
+    @ApplyEvent
+    public void apply(AccountMoneyAmountDecreasedEvent event) {
+        this.cashAmount = this.cashAmount.subtract(event.getPayload().getAmount());
     }
 
     public List<Event> handle(CreateAccountCommand createAccountCommand) {
-        Event event = new AccountCreatedEvent(aggregadeId, new AccountCreated(aggregadeId, AccountNumberGenerator.generate()));
+        Event event = new AccountCreatedEvent(getAggregadeId(), new AccountCreated(AccountNumberGenerator.generate()));
         return Collections.singletonList(event);
     }
 
     public List<Event> handle(PayIntoAccountCommand command) {
-        Event event = new AccountMoneyAmountIncreasedEvent(aggregadeId, new AccountMoneyAmountIncreased(aggregadeId, command.getAmount()));
+        Event event = new AccountMoneyAmountIncreasedEvent(getAggregadeId(), new AccountMoneyAmountIncreased(command.getAmount()));
         return Collections.singletonList(event);
     }
 
@@ -72,7 +59,7 @@ public class Account {
         if (command.getAmount().compareTo(this.cashAmount) > 0) {
             throw new IllegalStateException("Not enough money on account for transaction: " + this.cashAmount + " but given: " + command.getAmount());
         }
-        Event event = new AccountMoneyAmountDecreasedEvent(aggregadeId, new AccountMoneyAmountDecreased(aggregadeId, command.getAmount()));
+        Event event = new AccountMoneyAmountDecreasedEvent(getAggregadeId(), new AccountMoneyAmountDecreased(command.getAmount()));
         return Collections.singletonList(event);
     }
 }
