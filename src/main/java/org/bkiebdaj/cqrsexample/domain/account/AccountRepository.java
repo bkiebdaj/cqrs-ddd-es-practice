@@ -32,7 +32,8 @@ public class AccountRepository {
         return account;
     }
 
-    public void publishEvents(List<Event> events) {
-        events.forEach(gateway::publishEvent);
+    public void persist(Account account) {
+        account.getFreshEvents().forEach(gateway::publishEvent);
+        account.markAsUpdated();
     }
 }
