@@ -3,13 +3,10 @@ package org.bkiebdaj.cqrsexample.domain.account;
 import lombok.extern.slf4j.Slf4j;
 import org.bkiebdaj.cqrsexample.core.aggreagate.AggregateRoot;
 import org.bkiebdaj.cqrsexample.core.aggreagate.ApplyEvent;
-import org.bkiebdaj.cqrsexample.core.common.AggregadeId;
-import org.bkiebdaj.cqrsexample.domain.event.AccountCreatedEvent;
-import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountDecreasedEvent;
-import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountIncreasedEvent;
-import org.bkiebdaj.cqrsexample.domain.event.payload.AccountCreated;
-import org.bkiebdaj.cqrsexample.domain.event.payload.AccountMoneyAmountDecreased;
-import org.bkiebdaj.cqrsexample.domain.event.payload.AccountMoneyAmountIncreased;
+import org.bkiebdaj.cqrsexample.core.common.AggregateId;
+import org.bkiebdaj.cqrsexample.domain.event.AccountCreated;
+import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountDecreased;
+import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountIncreased;
 
 import java.math.BigDecimal;
 
@@ -19,38 +16,38 @@ public class Account extends AggregateRoot {
     private String accountNumber;
     private BigDecimal cashAmount;
 
-    Account(AggregadeId aggregadeId) {
-        super(aggregadeId);
+    Account(AggregateId aggregateId) {
+        super(aggregateId);
     }
 
     @ApplyEvent
-    public void on(AccountCreatedEvent event) {
-        this.accountNumber = event.getPayload().getAccountNumber();
+    public void on(AccountCreated event) {
+        this.accountNumber = event.getAccountNumber();
         this.cashAmount = BigDecimal.ZERO;
     }
 
     @ApplyEvent
-    public void on(AccountMoneyAmountIncreasedEvent event) {
-        this.cashAmount = this.cashAmount.add(event.getPayload().getAmount());
+    public void on(AccountMoneyAmountIncreased event) {
+        this.cashAmount = this.cashAmount.add(event.getAmount());
     }
 
     @ApplyEvent
-    public void on(AccountMoneyAmountDecreasedEvent event) {
-        this.cashAmount = this.cashAmount.subtract(event.getPayload().getAmount());
+    public void on(AccountMoneyAmountDecreased event) {
+        this.cashAmount = this.cashAmount.subtract(event.getAmount());
     }
 
     public void createAccount() {
-        apply(new AccountCreatedEvent(getAggregadeId(), new AccountCreated(AccountNumberGenerator.generate())));
+        apply(new AccountCreated(getAggregateId(), AccountNumberGenerator.generate()));
     }
 
     public void payInto(BigDecimal payIntoAmount) {
-        apply(new AccountMoneyAmountIncreasedEvent(getAggregadeId(), new AccountMoneyAmountIncreased(payIntoAmount)));
+        apply(new AccountMoneyAmountIncreased(getAggregateId(), payIntoAmount));
     }
 
     public void withdraw(BigDecimal withdrawAmount) {
         if (withdrawAmount.compareTo(this.cashAmount) > 0) {
             throw new IllegalStateException("Not enough money on account for transaction: " + this.cashAmount + " but given: " + withdrawAmount);
         }
-        apply(new AccountMoneyAmountDecreasedEvent(getAggregadeId(), new AccountMoneyAmountDecreased(withdrawAmount)));
+        apply(new AccountMoneyAmountDecreased(getAggregateId(), withdrawAmount));
     }
 }

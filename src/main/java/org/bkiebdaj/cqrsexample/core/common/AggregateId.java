@@ -6,19 +6,19 @@ import lombok.Value;
 import java.util.UUID;
 
 @Value
-public class AggregadeId {
+public class AggregateId {
     UUID id;
 
-    private AggregadeId(UUID uuid) {
+    private AggregateId(UUID uuid) {
         this.id = uuid;
     }
 
-    public static AggregadeId create() {
-        return new AggregadeId(UUID.randomUUID());
+    public static AggregateId create() {
+        return new AggregateId(UUID.randomUUID());
     }
 
-    public static AggregadeId of(String id) {
-        return new AggregadeId(UUID.fromString(id));
+    public static AggregateId of(String id) {
+        return new AggregateId(UUID.fromString(id));
     }
 
     @JsonValue

@@ -1,6 +1,7 @@
 package org.bkiebdaj.cqrsexample.core.event;
 
 import lombok.extern.slf4j.Slf4j;
+import org.bkiebdaj.cqrsexample.core.api.Event;
 import org.bkiebdaj.cqrsexample.core.api.EventHandler;
 import org.springframework.stereotype.Component;
 
@@ -22,15 +23,16 @@ public class SimpleEventDispatcher implements EventDispatcher {
 
     @Override
     @SuppressWarnings("unchecked")
-    public void dispatchEvent(Event event) {
+    public void dispatchEvent(EventEntity event) {
         log.info("Dispatch event: {}", name(event));
-        EventHandler eventHandler = eventHandlerRegister.get(event);
+        Event deserializedEvent = EventDeserializer.deserialize(event);
+        EventHandler eventHandler = eventHandlerRegister.get(deserializedEvent);
         if (eventHandler == null) {
             log.debug("No present handlers for event: {}", name(event));
             return;
         }
         log.info("Found event handler: {} --> {}", name(event), name(eventHandler));
-        executor.execute(() -> eventHandler.handle(event));
+        executor.execute(() -> eventHandler.handle(deserializedEvent));
     }
 
     private String name(Object object) {

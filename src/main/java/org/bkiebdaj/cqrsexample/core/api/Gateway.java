@@ -1,10 +1,10 @@
 package org.bkiebdaj.cqrsexample.core.api;
 
-import org.bkiebdaj.cqrsexample.core.event.Event;
+import org.bkiebdaj.cqrsexample.core.event.EventEntity;
 
 public interface Gateway {
 
     void publishCommand(Command command);
 
-    void publishEvent(Event event);
+    void publishEvent(EventEntity event);
 }

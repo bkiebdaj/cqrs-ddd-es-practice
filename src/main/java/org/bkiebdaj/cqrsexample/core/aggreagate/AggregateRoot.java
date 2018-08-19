@@ -3,8 +3,8 @@ package org.bkiebdaj.cqrsexample.core.aggreagate;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.bkiebdaj.cqrsexample.core.aggreagate.exception.AggregateException;
-import org.bkiebdaj.cqrsexample.core.common.AggregadeId;
-import org.bkiebdaj.cqrsexample.core.event.Event;
+import org.bkiebdaj.cqrsexample.core.api.Event;
+import org.bkiebdaj.cqrsexample.core.common.AggregateId;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -21,10 +21,10 @@ abstract public class AggregateRoot {
     private final List<Event> freshEvents = new ArrayList<>();
 
     @Getter
-    private final AggregadeId aggregadeId;
+    private final AggregateId aggregateId;
 
-    public AggregateRoot(AggregadeId aggregadeId) {
-        this.aggregadeId = aggregadeId;
+    public AggregateRoot(AggregateId aggregateId) {
+        this.aggregateId = aggregateId;
     }
 
     //Should be package scope when abstract aggregate repository will be available.

@@ -24,7 +24,7 @@ public class EventProcessor implements Runnable {
     public void run() {
         while (true) {
             try {
-                Event event = eventMessageBus.poll();
+                EventEntity event = eventMessageBus.poll();
                 eventDispatcher.dispatchEvent(event);
             } catch (Exception e) {
                 log.error("Error while processing command", e);

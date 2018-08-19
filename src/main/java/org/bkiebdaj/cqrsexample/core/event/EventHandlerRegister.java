@@ -1,6 +1,7 @@
 package org.bkiebdaj.cqrsexample.core.event;
 
 import lombok.extern.slf4j.Slf4j;
+import org.bkiebdaj.cqrsexample.core.api.Event;
 import org.bkiebdaj.cqrsexample.core.api.EventHandler;
 
 import java.lang.reflect.Method;

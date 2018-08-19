@@ -3,8 +3,8 @@ package org.bkiebdaj.cqrsexample;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bkiebdaj.cqrsexample.core.common.AggregadeId;
-import org.bkiebdaj.cqrsexample.core.event.Event;
+import org.bkiebdaj.cqrsexample.core.common.AggregateId;
+import org.bkiebdaj.cqrsexample.core.event.EventEntity;
 import org.bkiebdaj.cqrsexample.core.event.store.EventStore;
 import org.bkiebdaj.cqrsexample.core.gateway.SimpleGateway;
 import org.bkiebdaj.cqrsexample.domain.command.CreateAccountCommand;
@@ -57,7 +57,7 @@ class SimpleMvc {
     public ResponseEntity<String> payInto(@RequestBody AmountChange amountChange) {
         log.info("{}", amountChange);
 
-        simpleGateway.publishCommand(new PayIntoAccountCommand(AggregadeId.of(amountChange.getUserId()), amountChange.getAmount()));
+        simpleGateway.publishCommand(new PayIntoAccountCommand(AggregateId.of(amountChange.getUserId()), amountChange.getAmount()));
 
         return ResponseEntity.ok("OK-PAY-INTO");
     }
@@ -66,13 +66,13 @@ class SimpleMvc {
     public ResponseEntity<String> withdraw(@RequestBody AmountChange amountChange) {
         log.info("{}", amountChange);
 
-        simpleGateway.publishCommand(new WithdrawFromAccountCommand(AggregadeId.of(amountChange.getUserId()), amountChange.getAmount()));
+        simpleGateway.publishCommand(new WithdrawFromAccountCommand(AggregateId.of(amountChange.getUserId()), amountChange.getAmount()));
 
         return ResponseEntity.ok("OK-WITHDRAW");
     }
 
     @GetMapping(value = "/events", produces = "application/json")
-    public ResponseEntity<List<Event>> getAllEvents() {
+    public ResponseEntity<List<EventEntity>> getAllEvents() {
         return ResponseEntity.ok(eventStore.findAll());
     }
 

@@ -1,8 +1,8 @@
 package org.bkiebdaj.cqrsexample.domain.service.accountpresentation;
 
-import org.bkiebdaj.cqrsexample.domain.event.AccountCreatedEvent;
-import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountDecreasedEvent;
-import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountIncreasedEvent;
+import org.bkiebdaj.cqrsexample.domain.event.AccountCreated;
+import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountDecreased;
+import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountIncreased;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -12,19 +12,19 @@ import java.util.List;
 public class AccountPresentationService {
     private final AccountRepository accountRepository = new AccountRepository();
 
-    public void handle(AccountCreatedEvent event) {
-        AccountEntity accountEntity = new AccountEntity(event.getAggregadeId().getId().toString(), event.getPayload().getAccountNumber(), BigDecimal.ZERO);
+    public void handle(AccountCreated event) {
+        AccountEntity accountEntity = new AccountEntity(event.getAggregateId().getId().toString(), event.getAccountNumber(), BigDecimal.ZERO);
         accountRepository.save(accountEntity);
     }
 
-    public void handle(AccountMoneyAmountIncreasedEvent event) {
-        AccountEntity accountEntity = accountRepository.findById(event.getAggregadeId().getId().toString());
-        accountEntity.increaseAmount(event.getPayload().getAmount());
+    public void handle(AccountMoneyAmountIncreased event) {
+        AccountEntity accountEntity = accountRepository.findById(event.getAggregateId().getId().toString());
+        accountEntity.increaseAmount(event.getAmount());
     }
 
-    public void handle(AccountMoneyAmountDecreasedEvent event) {
-        AccountEntity accountEntity = accountRepository.findById(event.getAggregadeId().getId().toString());
-        accountEntity.decreaseAmount(event.getPayload().getAmount());
+    public void handle(AccountMoneyAmountDecreased event) {
+        AccountEntity accountEntity = accountRepository.findById(event.getAggregateId().getId().toString());
+        accountEntity.decreaseAmount(event.getAmount());
     }
 
     public List<AccountEntity> getAllAccounts() {
