@@ -19,7 +19,7 @@ public class WithdrawFromAccountCommandHandler implements CommandHandler<Withdra
     public void handle(WithdrawFromAccountCommand command) {
         log.info("Handle command: {}", command);
         Account account = accountRepository.load(command.getAccountId());
-        account.withdraw(command);
+        account.withdraw(command.getAmount());
         accountRepository.persist(account);
     }
 }
