@@ -24,16 +24,28 @@ public class EventStore {
     private final Collection<EventEntity> data = Collections.synchronizedCollection(new ArrayList<>());
     private final Gateway gateway;
 
-    public void save(Event event) {
+    public int save(List<Event> events, int version, Class<?> clazz) {
+        for (Event event : events) {
+            save(event, ++version, clazz);
+        }
+        return version;
+    }
+
+    private void save(Event event, int version, Class<?> clazz) {
         log.info("Store event: {}", event);
-        EventEntity eventEntity = EventEntity.builder()
+        EventEntity eventEntity = buildEntity(event, version, clazz);
+        data.add(eventEntity);
+        gateway.publishEvent(eventEntity);
+    }
+
+    private EventEntity buildEntity(Event event, int version, Class<?> clazz) {
+        return EventEntity.builder()
                 .aggregateId(event.getAggregateId())
-                .aggregateType("Account")
+                .aggregateType(clazz.getSimpleName())
+                .version(version)
                 .eventType(event.getClass().getSimpleName())
                 .payload(EventSerializer.serialize(event))
                 .build();
-        data.add(eventEntity);
-        gateway.publishEvent(eventEntity);
     }
 
     public List<Event> findAllBy(AggregateId aggregateId) {

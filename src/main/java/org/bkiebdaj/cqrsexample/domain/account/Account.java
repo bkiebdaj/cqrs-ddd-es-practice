@@ -3,7 +3,6 @@ package org.bkiebdaj.cqrsexample.domain.account;
 import lombok.extern.slf4j.Slf4j;
 import org.bkiebdaj.cqrsexample.core.aggreagate.AggregateRoot;
 import org.bkiebdaj.cqrsexample.core.aggreagate.ApplyEvent;
-import org.bkiebdaj.cqrsexample.core.common.AggregateId;
 import org.bkiebdaj.cqrsexample.domain.event.AccountCreated;
 import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountDecreased;
 import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountIncreased;
@@ -15,10 +14,6 @@ public class Account extends AggregateRoot {
 
     private String accountNumber;
     private BigDecimal cashAmount;
-
-    Account(AggregateId aggregateId) {
-        super(aggregateId);
-    }
 
     @ApplyEvent
     public void on(AccountCreated event) {

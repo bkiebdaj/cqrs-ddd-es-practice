@@ -18,17 +18,23 @@ abstract public class AggregateRoot {
     private static final AggregateMethodReferenceCache eventHandlersCache = new AggregateMethodReferenceCache(ApplyEvent.class);
 
     @Getter
-    private final List<Event> freshEvents = new ArrayList<>();
+    private final List<Event> uncommittedEvents = new ArrayList<>();
 
     @Getter
-    private final AggregateId aggregateId;
+    private AggregateId aggregateId;
 
-    public AggregateRoot(AggregateId aggregateId) {
+    @Getter
+    private int version = 0;
+
+    void setAggregateId(AggregateId aggregateId) {
+        if (this.aggregateId != null) {
+            throw new AggregateException("Aggregate is already set!!!");
+        }
         this.aggregateId = aggregateId;
     }
 
-    //Should be package scope when abstract aggregate repository will be available.
-    public void apply(List<Event> events) {
+    void replay(List<Event> events) {
+        version += events.size();
         events.forEach(this::apply);
     }
 
@@ -38,11 +44,11 @@ abstract public class AggregateRoot {
 
     private void applyFresh(Event event) {
         apply(event);
-        freshEvents.add(event);
+        uncommittedEvents.add(event);
     }
 
     private void apply(Event event) {
-        log.info("Aggregate root apply event: {}", event);
+        log.info("Aggregate root replay event: {}", event);
         fireHandleMethod(event, eventHandlersCache.getMethod(getClass(), event.getClass()));
     }
 
@@ -54,7 +60,8 @@ abstract public class AggregateRoot {
         }
     }
 
-    public void markAsUpdated() {
-        freshEvents.clear();
+    void markAsCommitted(int updatedVersion) {
+        version = updatedVersion;
+        uncommittedEvents.clear();
     }
 }
