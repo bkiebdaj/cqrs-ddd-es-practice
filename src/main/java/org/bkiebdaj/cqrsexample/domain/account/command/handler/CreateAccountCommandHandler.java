@@ -1,12 +1,12 @@
-package org.bkiebdaj.cqrsexample.domain.command.handler;
+package org.bkiebdaj.cqrsexample.domain.account.command.handler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bkiebdaj.cqrsexample.core.api.CommandHandler;
 import org.bkiebdaj.cqrsexample.core.common.AggregateId;
-import org.bkiebdaj.cqrsexample.domain.account.Account;
-import org.bkiebdaj.cqrsexample.domain.command.CreateAccountCommand;
-import org.bkiebdaj.cqrsexample.domain.repository.AccountRepository;
+import org.bkiebdaj.cqrsexample.domain.account.aggregate.Account;
+import org.bkiebdaj.cqrsexample.domain.account.command.CreateAccountCommand;
+import org.bkiebdaj.cqrsexample.domain.account.repository.AccountRepository;
 import org.springframework.stereotype.Component;
 
 @Slf4j

@@ -1,4 +1,4 @@
-package org.bkiebdaj.cqrsexample.domain.service.accountpresentation;
+package org.bkiebdaj.cqrsexample.domain.account.service.accountpresentation;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

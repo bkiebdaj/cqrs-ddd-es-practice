@@ -1,4 +1,4 @@
-package org.bkiebdaj.cqrsexample.domain.account;
+package org.bkiebdaj.cqrsexample.domain.account.aggregate;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

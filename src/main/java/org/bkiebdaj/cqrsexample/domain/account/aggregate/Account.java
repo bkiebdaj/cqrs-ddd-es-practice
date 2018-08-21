@@ -1,11 +1,11 @@
-package org.bkiebdaj.cqrsexample.domain.account;
+package org.bkiebdaj.cqrsexample.domain.account.aggregate;
 
 import lombok.extern.slf4j.Slf4j;
 import org.bkiebdaj.cqrsexample.core.aggreagate.AggregateRoot;
 import org.bkiebdaj.cqrsexample.core.aggreagate.ApplyEvent;
-import org.bkiebdaj.cqrsexample.domain.event.AccountCreated;
-import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountDecreased;
-import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountIncreased;
+import org.bkiebdaj.cqrsexample.domain.account.event.AccountCreated;
+import org.bkiebdaj.cqrsexample.domain.account.event.AccountMoneyAmountDecreased;
+import org.bkiebdaj.cqrsexample.domain.account.event.AccountMoneyAmountIncreased;
 
 import java.math.BigDecimal;
 

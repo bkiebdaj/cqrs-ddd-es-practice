@@ -2,9 +2,9 @@ package org.bkiebdaj.cqrsexample.core.event;
 
 import com.google.gson.Gson;
 import org.bkiebdaj.cqrsexample.core.api.Event;
-import org.bkiebdaj.cqrsexample.domain.event.AccountCreated;
-import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountDecreased;
-import org.bkiebdaj.cqrsexample.domain.event.AccountMoneyAmountIncreased;
+import org.bkiebdaj.cqrsexample.domain.account.event.AccountCreated;
+import org.bkiebdaj.cqrsexample.domain.account.event.AccountMoneyAmountDecreased;
+import org.bkiebdaj.cqrsexample.domain.account.event.AccountMoneyAmountIncreased;
 
 import java.util.HashMap;
 import java.util.Map;
