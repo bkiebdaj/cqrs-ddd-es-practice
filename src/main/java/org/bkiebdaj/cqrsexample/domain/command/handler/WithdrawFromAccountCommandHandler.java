@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bkiebdaj.cqrsexample.core.api.CommandHandler;
 import org.bkiebdaj.cqrsexample.domain.account.Account;
-import org.bkiebdaj.cqrsexample.domain.account.AccountRepository;
 import org.bkiebdaj.cqrsexample.domain.command.WithdrawFromAccountCommand;
+import org.bkiebdaj.cqrsexample.domain.repository.AccountRepository;
 import org.springframework.stereotype.Component;
 
 @Slf4j
